@@ -1,0 +1,912 @@
+/* Основные стили */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+  background-color: #f5f7fa;
+  color: #333;
+}
+
+.app-container {
+  max-width: 1000px;
+  margin: 0 auto;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Шапка */
+.app-header {
+  background-color: var(--primary-color);
+  color: white;
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.profile-btn {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 5px;
+  transition: background-color 0.2s;
+}
+
+.profile-btn:hover {
+  background-color: rgba(255,255,255,0.1);
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid white;
+}
+
+.app-title {
+  font-size: 1.5rem;
+}
+
+/* Основное содержимое */
+.main-content {
+  flex: 1;
+  padding: 1rem;
+  background-color: white;
+}
+
+.task-nav ul {
+  display: flex;
+  list-style: none;
+  border-bottom: 2px solid #eee;
+  margin-bottom: 1.5rem;
+}
+
+.task-nav li {
+  padding: 0.75rem 1.5rem;
+  cursor: pointer;
+  color: #666;
+  position: relative;
+}
+
+.task-nav li.active {
+  color: var(--primary-color);
+  font-weight: bold;
+}
+
+.task-nav li.active::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: var(--primary-color);
+}
+
+.task-nav li i {
+  margin-right: 0.5rem;
+}
+
+/* Подвкладки */
+.sub-tabs {
+  display: flex;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid #eee;
+}
+
+.sub-tab {
+  padding: 0.5rem 1rem;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  color: #666;
+}
+
+.sub-tab.active {
+  border-bottom-color: var(--primary-color);
+  color: var(--primary-color);
+  font-weight: bold;
+}
+
+.sub-tab-content {
+  display: none;
+}
+
+.sub-tab-content.active {
+  display: block;
+}
+
+/* Модальное окно для добавления/редактирования задачи */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.5);
+  z-index: 1000;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal.active {
+  display: flex;
+}
+
+.modal-content {
+  background-color: white;
+  border-radius: 5px;
+  width: 100%;
+  max-width: 500px;
+  padding: 1.5rem;
+  position: relative;
+}
+
+.close-btn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: #666;
+}
+
+.close-btn:hover {
+  color: #333;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+}
+
+.form-group input,
+.form-group select {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+.days-selector {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.day-selector {
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background-color: #eee;
+  cursor: pointer;
+  font-size: 0.8rem;
+}
+
+.day-selector.active {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.form-buttons {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.submit-btn {
+  flex: 1;
+  padding: 0.75rem;
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.2s;
+}
+
+.submit-btn:hover {
+  background-color: #3a5a8f;
+}
+
+.delete-btn {
+  flex: 1;
+  padding: 0.75rem;
+  background-color: #f44336;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.2s;
+}
+
+.delete-btn:hover {
+  background-color: #d32f2f;
+}
+
+/* Список задач */
+.task-list {
+  margin-bottom: 1.5rem;
+}
+
+.task-item {
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  margin-bottom: 0.75rem;
+  background-color: #f9f9f9;
+  border-radius: 5px;
+  transition: transform 0.2s, box-shadow 0.2s;
+  cursor: pointer;
+}
+
+.task-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.task-item.completed {
+  opacity: 0.7;
+  background-color: #f0f0f0;
+}
+
+.task-item.completed .task-info h3 {
+  text-decoration: line-through;
+  color: #666;
+}
+
+.task-controls {
+  margin-right: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.task-controls button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.2rem;
+  color: #666;
+  padding: 0.25rem;
+  border-radius: 3px;
+  transition: background-color 0.2s;
+}
+
+.task-controls button:hover {
+  background-color: rgba(0,0,0,0.05);
+}
+
+.plus-btn {
+  color: #4CAF50 !important;
+}
+
+.minus-btn {
+  color: #F44336 !important;
+}
+
+.check-btn {
+  font-size: 1.5rem !important;
+}
+
+.task-info {
+  flex-grow: 1;
+}
+
+.task-info h3 {
+  margin-bottom: 0.25rem;
+  font-size: 1.1rem;
+}
+
+.task-info p {
+  color: #666;
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+
+.habit-counter {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.habit-counter progress {
+  flex: 1;
+  height: 8px;
+  border-radius: 4px;
+}
+
+.habit-counter progress::-webkit-progress-bar {
+  background-color: #eee;
+  border-radius: 4px;
+}
+
+.habit-counter progress::-webkit-progress-value {
+  background-color: var(--primary-color);
+  border-radius: 4px;
+}
+
+.habit-counter span {
+  font-size: 0.8rem;
+  color: #666;
+}
+
+.task-days {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.task-days .day {
+  width: 25px;
+  height: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background-color: #eee;
+  font-size: 0.8rem;
+}
+
+.task-days .day.active {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.task-due {
+  font-size: 0.8rem;
+  color: #666;
+  font-style: italic;
+}
+
+.task-stats {
+  margin-left: 1rem;
+}
+
+.difficulty {
+  padding: 0.25rem 0.5rem;
+  border-radius: 3px;
+  font-size: 0.8rem;
+  font-weight: bold;
+}
+
+.difficulty.easy {
+  background-color: #E8F5E9;
+  color: #2E7D32;
+}
+
+.difficulty.medium {
+  background-color: #FFF8E1;
+  color: #F57F17;
+}
+
+.difficulty.hard {
+  background-color: #FFEBEE;
+  color: #C62828;
+}
+
+.add-task-btn {
+  display: block;
+  width: 100%;
+  padding: 0.75rem;
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.2s;
+}
+
+.add-task-btn:hover {
+  background-color: #3a5a8f;
+}
+
+.add-task-btn i {
+  margin-right: 0.5rem;
+}
+
+/* Модальное окно профиля */
+.profile-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0,0,0,0.5);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s;
+}
+
+.profile-modal.active {
+  display: flex;
+}
+
+.profile-modal .modal-content {
+  background-color: white;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 600px;
+  max-height: 80vh;
+  overflow-y: auto;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.modal-header {
+  padding: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #eee;
+}
+
+.profile-tabs {
+  display: flex;
+  border-bottom: 1px solid #eee;
+}
+
+.profile-tab {
+  flex: 1;
+  padding: 1rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1rem;
+  border-bottom: 3px solid transparent;
+}
+
+.profile-tab.active {
+  border-bottom-color: var(--primary-color);
+  color: var(--primary-color);
+  font-weight: bold;
+}
+
+.profile-tab-content {
+  display: none;
+  padding: 1.5rem;
+}
+
+.profile-tab-content.active {
+  display: block;
+}
+
+/* Содержимое вкладки профиля */
+.avatar-section {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+#profile-avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid var(--primary-color);
+  margin-bottom: 1rem;
+}
+
+.stats-section {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.stat-item {
+  background-color: #f8f9fa;
+  padding: 1rem;
+  border-radius: 8px;
+}
+
+.stat-item h3 {
+  margin-bottom: 0.5rem;
+}
+
+.progress-bar {
+  height: 10px;
+  background-color: #e9ecef;
+  border-radius: 5px;
+  margin: 0.5rem 0;
+}
+
+.progress-fill {
+  height: 100%;
+  background-color: var(--primary-color);
+  border-radius: 5px;
+}
+
+.gold-amount, .exp-amount {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  font-size: 1.2rem;
+}
+
+.gold-amount i {
+  color: #ffd700;
+}
+
+.exp-amount i {
+  color: var(--primary-color);
+}
+
+#profile-bio {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  resize: vertical;
+  min-height: 100px;
+  margin-bottom: 0.5rem;
+}
+
+#save-bio {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+#save-bio:hover {
+  background-color: #3a5a8f;
+}
+
+/* Содержимое вкладки достижений */
+.achievements-grid {
+  display: grid;
+  gap: 1rem;
+}
+
+.achievement {
+  display: flex;
+  gap: 1rem;
+  padding: 1rem;
+  border-radius: 8px;
+  align-items: center;
+}
+
+.achievement.unlocked {
+  background-color: #f8f9fa;
+  border-left: 4px solid var(--primary-color);
+}
+
+.achievement.locked {
+  background-color: #f1f1f1;
+  color: #999;
+}
+
+.achievement-icon {
+  font-size: 1.5rem;
+  width: 50px;
+  height: 50px;
+  background-color: white;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.achievement.unlocked .achievement-icon {
+  color: #ffd700;
+  background-color: #fffae6;
+}
+
+.achievement.locked .achievement-icon {
+  color: #ccc;
+}
+
+.achievement-info {
+  flex: 1;
+}
+
+.achievement-info h3 {
+  margin-bottom: 0.25rem;
+}
+
+.achievement-date {
+  font-size: 0.8rem;
+  color: #666;
+  display: block;
+  margin-top: 0.25rem;
+}
+
+/* Содержимое вкладки инвентаря */
+.inventory-tabs {
+  display: flex;
+  border-bottom: 1px solid #eee;
+  margin-bottom: 1rem;
+}
+
+.inventory-tab {
+  flex: 1;
+  padding: 0.75rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+}
+
+.inventory-tab.active {
+  border-bottom-color: var(--primary-color);
+  color: var(--primary-color);
+  font-weight: bold;
+}
+
+.inventory-content {
+  display: none;
+}
+
+.inventory-content.active {
+  display: block;
+}
+
+.inventory-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 1rem;
+}
+
+.inventory-item {
+  background-color: #f8f9fa;
+  padding: 1rem;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.inventory-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--primary-color);
+  margin-bottom: 0.5rem;
+}
+
+.inventory-theme {
+  height: 80px;
+  border-radius: 8px;
+  margin-bottom: 0.5rem;
+}
+
+.use-item-btn {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 0.5rem;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 0.5rem;
+  width: 100%;
+}
+
+.empty-inventory {
+  text-align: center;
+  color: #666;
+  padding: 1rem;
+}
+
+/* Магазин */
+.shop-container {
+  padding: 1rem;
+}
+
+.shop-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.shop-currency {
+  display: flex;
+  align-items: center;
+  font-size: 1.2rem;
+  color: #ffd700;
+  font-weight: bold;
+}
+
+.shop-currency i {
+  margin-right: 0.5rem;
+}
+
+.shop-tabs {
+  display: flex;
+  margin-bottom: 1.5rem;
+  border-bottom: 2px solid #eee;
+}
+
+.shop-category {
+  padding: 0.75rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+}
+
+.shop-category.active {
+  border-bottom-color: var(--primary-color);
+  color: var(--primary-color);
+  font-weight: bold;
+}
+
+.shop-items-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1.5rem;
+}
+
+.shop-item {
+  background-color: white;
+  border-radius: 8px;
+  padding: 1rem;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  transition: transform 0.3s;
+  text-align: center;
+}
+
+.shop-item:hover {
+  transform: translateY(-5px);
+}
+
+.shop-item-avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--primary-color);
+  margin-bottom: 0.5rem;
+}
+
+.shop-item-theme {
+  height: 100px;
+  border-radius: 8px;
+  margin-bottom: 0.5rem;
+}
+
+.shop-item-name {
+  margin-bottom: 0.5rem;
+}
+
+.shop-item-price {
+  color: #ffd700;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0.5rem;
+}
+
+.shop-item-price i {
+  margin-right: 0.5rem;
+}
+
+.shop-item-owned {
+  color: #4CAF50;
+  font-size: 0.8rem;
+}
+
+.shop-item-button {
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  padding: 0.5rem;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 100%;
+  margin-top: 0.5rem;
+}
+
+.shop-item-button:hover {
+  background-color: #3a5a8f;
+}
+
+/* Анимации */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Переменные темы по умолчанию */
+:root {
+  --primary-color: #4a6fa5;
+  --secondary-color: #6b8cbe;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+  .modal-content {
+      width: 95%;
+  }
+  
+  .shop-items-container {
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  }
+  
+  .inventory-grid {
+      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  }
+}
+
+@media (max-width: 480px) {
+  .task-nav li {
+      padding: 0.5rem;
+      font-size: 0.9rem;
+  }
+  
+  .task-nav li i {
+      margin-right: 0.25rem;
+  }
+  
+  .profile-tabs, .inventory-tabs, .shop-tabs {
+      flex-wrap: wrap;
+  }
+  
+  .profile-tab, .inventory-tab, .shop-category {
+      flex: 1 0 50%;
+      padding: 0.5rem;
+      font-size: 0.9rem;
+  }
+  
+  .shop-items-container, .inventory-grid {
+      grid-template-columns: 1fr 1fr;
+  }
+}
+
+.tab-content {
+  display: none;
+}
+
+.tab-content.active {
+  display: block;
+  animation: fadeIn 0.3s;
+}
+
+.task-nav li {
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.task-nav li.active {
+  color: var(--primary-color);
+  font-weight: bold;
+  position: relative;
+}
+
+.task-nav li.active::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: var(--primary-color);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}

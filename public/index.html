@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskHero - Игровое приложение для продуктивности</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Шапка с профилем -->
+        <header class="app-header">
+            <div class="profile-btn" id="profileBtn">
+                <img src="avatars/warrior.png" alt="Аватар" class="avatar" id="headerAvatar">
+                <button id="logoutBtn" title="Выйти" style="margin-left:10px;display:none;"><i class="fas fa-sign-out-alt"></i></button>
+            </div>
+            <h1 class="app-title">TaskHero</h1>
+        </header>
+
+        <!-- Блок авторизации/регистрации -->
+        <div id="auth-block" style="display:none;max-width:400px;margin:40px auto;">
+            <h2 id="auth-title">Вход</h2>
+            <form id="authForm">
+                <div class="form-group">
+                    <label for="authLogin">Логин</label>
+                    <input type="text" id="authLogin" required autocomplete="username">
+                </div>
+                <div class="form-group">
+                    <label for="authPassword">Пароль</label>
+                    <input type="password" id="authPassword" required autocomplete="current-password">
+                </div>
+                <button type="submit" class="submit-btn" id="authBtn">Войти</button>
+                <p id="auth-error" style="color:red;margin-top:8px;"></p>
+            </form>
+            <p style="margin-top:16px;">
+                <span id="switchToReg" style="cursor:pointer;color:var(--primary-color);">Нет аккаунта? Регистрация</span>
+                <span id="switchToLogin" style="cursor:pointer;color:var(--primary-color);display:none;">У меня есть аккаунт</span>
+            </p>
+        </div>
+
+        <!-- Основное содержимое -->
+        <main class="main-content" id="mainApp" style="display:none;">
+            <!-- Навигация по разделам -->
+            <nav class="task-nav">
+                <ul>
+                    <li class="active" data-tab="habits"><i class="fas fa-repeat"></i> Привычки</li>
+                    <li data-tab="dailies"><i class="fas fa-calendar-day"></i> Ежедневные</li>
+                    <li data-tab="todos"><i class="fas fa-tasks"></i> Задачи</li>
+                    <li data-tab="shop"><i class="fas fa-store"></i> Магазин</li>
+                </ul>
+            </nav>
+
+            <!-- Контент разделов -->
+            <div class="tab-content active" id="habits">
+                <div class="sub-tabs" style="display:none;"></div>
+                <div class="sub-tab-content active" id="habits-active">
+                    <div class="task-list">
+                        <!-- Привычки будут загружены через JS -->
+                    </div>
+                    <button class="add-task-btn"><i class="fas fa-plus"></i> Добавить привычку</button>
+                </div>
+            </div>
+
+            <div class="tab-content" id="dailies">
+                <div class="sub-tabs">
+                    <button class="sub-tab active" data-subtab="dailies-active">Активные</button>
+                    <button class="sub-tab" data-subtab="dailies-completed">Выполненные</button>
+                </div>
+                <div class="sub-tab-content active" id="dailies-active">
+                    <div class="task-list"></div>
+                    <button class="add-task-btn"><i class="fas fa-plus"></i> Добавить ежедневное дело</button>
+                </div>
+                <div class="sub-tab-content" id="dailies-completed">
+                    <div class="task-list"></div>
+                </div>
+            </div>
+
+            <div class="tab-content" id="todos">
+                <div class="sub-tabs">
+                    <button class="sub-tab active" data-subtab="todos-active">Активные</button>
+                    <button class="sub-tab" data-subtab="todos-completed">Выполненные</button>
+                </div>
+                <div class="sub-tab-content active" id="todos-active">
+                    <div class="task-list"></div>
+                    <button class="add-task-btn"><i class="fas fa-plus"></i> Добавить задачу</button>
+                </div>
+                <div class="sub-tab-content" id="todos-completed">
+                    <div class="task-list"></div>
+                </div>
+            </div>
+
+            <div class="tab-content" id="shop">
+                <div class="shop-container">
+                    <div class="shop-header">
+                        <div class="shop-currency">
+                            <i class="fas fa-coins"></i>
+                            <span id="shop-gold-amount">0</span>
+                        </div>
+                        <h2>Магазин</h2>
+                    </div>
+                    
+                    <div class="shop-tabs">
+                        <button class="shop-category active" data-category="avatars">Аватарки</button>
+                        <button class="shop-category" data-category="themes">Темы</button>
+                        <button class="shop-category" data-category="boosts">Бусты</button>
+                    </div>
+                    
+                    <div class="shop-items-container">
+                        <!-- Товары будут загружаться через JS -->
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Модальное окно для добавления/редактирования задачи -->
+    <div class="modal" id="taskModal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <h2 id="modalTitle">Добавить привычку</h2>
+            <form id="taskForm">
+                <input type="hidden" id="taskId">
+                <div class="form-group">
+                    <label for="taskName">Название</label>
+                    <input type="text" id="taskName" required>
+                </div>
+                <div class="form-group">
+                    <label for="taskType">Тип</label>
+                    <select id="taskType" disabled>
+                        <option value="habit">Привычка</option>
+                        <option value="daily">Ежедневное</option>
+                        <option value="todo">Задача</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="taskDifficulty">Сложность</label>
+                    <select id="taskDifficulty">
+                        <option value="easy">Легко</option>
+                        <option value="medium">Средне</option>
+                        <option value="hard">Сложно</option>
+                    </select>
+                </div>
+                <div class="form-group" id="daysGroup" style="display: none;">
+                    <label>Дни повторения</label>
+                    <div class="days-selector">
+                        <span class="day-selector" data-day="mon">Пн</span>
+                        <span class="day-selector" data-day="tue">Вт</span>
+                        <span class="day-selector" data-day="wed">Ср</span>
+                        <span class="day-selector" data-day="thu">Чт</span>
+                        <span class="day-selector" data-day="fri">Пт</span>
+                        <span class="day-selector" data-day="sat">Сб</span>
+                        <span class="day-selector" data-day="sun">Вс</span>
+                    </div>
+                </div>
+                <div class="form-group" id="dueDateGroup" style="display: none;">
+                    <label for="dueDate">Срок выполнения</label>
+                    <input type="date" id="dueDate">
+                </div>
+                <div class="form-group" id="counterGroup" style="display: none;">
+                    <label for="counterTarget">Цель (раз в день)</label>
+                    <input type="number" id="counterTarget" min="1" value="1">
+                </div>
+                <div class="form-buttons">
+                    <button type="submit" class="submit-btn">Сохранить</button>
+                    <button type="button" class="delete-btn" id="deleteTaskBtn" style="display: none;">Удалить</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Модальное окно профиля -->
+    <div class="profile-modal" id="profileModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Профиль игрока</h2>
+                <button class="close-btn" id="closeProfileModal">&times;</button>
+            </div>
+            <div class="profile-tabs">
+                <button class="profile-tab active" data-tab="profile">Профиль</button>
+                <button class="profile-tab" data-tab="achievements">Достижения</button>
+                <button class="profile-tab" data-tab="inventory">Коллекция</button>
+            </div>
+            <div class="profile-tab-content active" id="profile-tab">
+                <div class="avatar-section">
+                    <img src="avatars/warrior.png" alt="Аватар" id="profile-avatar">
+                </div>
+                <div class="stats-section">
+                    <div class="stat-item">
+                        <h3>Уровень: <span id="profile-level">1</span></h3>
+                        <div class="progress-bar">
+                          <div class="progress-fill" id="exp-bar" style="width: 0%;"></div>
+                        </div>
+                        <p>Опыт: <span class="exp-amount"><i class="fas fa-star"></i> <span id="exp-value">0</span> / <span id="exp-max">50</span></span></p>
+                    </div>
+                    <div class="stat-item">
+                      <h3>Золото: <span class="gold-amount"><i class="fas fa-coins"></i> <span id="gold-value">0</span></span></h3>
+                    </div>
+                    <div class="stat-item">
+                        <h3>О себе</h3>
+                        <textarea id="profile-bio" placeholder="Расскажите о себе..."></textarea>
+                        <button id="save-bio">Сохранить</button>
+                    </div>
+                </div>
+            </div>
+            <div class="profile-tab-content" id="achievements-tab">
+                <div class="achievements-grid" id="achievements-list"></div>
+            </div>
+            <div class="profile-tab-content" id="inventory-tab">
+                <div class="inventory-tabs">
+                    <button class="inventory-tab active" data-tab="avatars-inventory">Аватарки</button>
+                    <button class="inventory-tab" data-tab="themes-inventory">Темы</button>
+                </div>
+                <div class="inventory-content active" id="avatars-inventory">
+                    <div class="inventory-grid"></div>
+                </div>
+                <div class="inventory-content" id="themes-inventory">
+                    <div class="inventory-grid"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
